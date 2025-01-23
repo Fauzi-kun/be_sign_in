@@ -3,18 +3,18 @@ const jwt = require("jsonwebtoken");
 module.exports.validateToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    return res.json({ message: "gagal di middleware" });
+    return res.status(401).json({ message: "failed auth" });
   }
 
   const token = authHeader.split(" ", [2])[1];
   if (!token) {
-    return res.json({ message: "invalid" });
+    return res.status(401).json({ message: "failed auth" });
   }
 
   try {
     const decoded = jwt.verify(token, "secret");
     next();
   } catch (err) {
-    return res.json({ message: "error token" });
+    return res.status(401).json({ message: "failed auth" });
   }
 };

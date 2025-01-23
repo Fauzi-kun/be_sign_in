@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const getUser = async (req, res) => {
   const user = await knex("user").select("*");
-  res.json(user);
+  res.status(201).json(user);
 };
 
 const addUser = async (req, res) => {
@@ -17,7 +17,7 @@ const addUser = async (req, res) => {
     password: hashPassword,
     email: newUser.email,
   });
-  res.json(newUser);
+  res.status(201).json(newUser);
 };
 
 const login = async (req, res) => {
@@ -34,12 +34,12 @@ const login = async (req, res) => {
         { fullname: loginUser.fullname, username: loginUser.username },
         "secret"
       );
-      res.json({ ingfo: "berhasil login", "token anda": token });
+      res.status(200).json({ message: "berhasil login", "token anda": token });
     } else {
-      res.json("gagal login");
+      res.status(400).json({ message: "password salah" });
     }
   } catch (err) {
-    res.json("cok");
+    res.status(400).json({ message: "user tidak ditemukan" });
   }
 };
 
